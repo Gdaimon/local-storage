@@ -10,6 +10,8 @@ function eventListeners() {
     .addEventListener('submit', agregarTweet);
 
   listaTweets.addEventListener('click', borrarTweet);
+
+  document.addEventListener('DOMContentLoaded', cargarTweetsLocalStorage);
 }
 
 // Funciones
@@ -18,6 +20,9 @@ function agregarTweet(e) {
   const textArea = document.querySelector('#tweet');
   const tweet = textArea.value.trim();
   adicionarItem(tweet);
+  if (textArea) {
+    agregarTweetLocalStorage(texto);
+  }
   textArea.value = '';
 }
 
@@ -30,7 +35,6 @@ function adicionarItem(texto) {
     item.textContent = texto;
     item.appendChild(botonBorrar);
     listaTweets.appendChild(item);
-    agregarTweetLocalStorage(texto);
   }
 }
 
@@ -38,7 +42,9 @@ function borrarTweet(e) {
   e.preventDefault(e);
   if (e.target.className === 'borrar-tweet') {
     e.target.parentElement.remove();
-    alert('Tweet eliminado...!');
+    setTimeout(() => {
+      alert('Tweet eliminado...!');
+    }, 200);
   }
 }
 
@@ -53,4 +59,11 @@ function obtenerTweetLocalStorage() {
     return [];
   }
   return JSON.parse(localStorage.getItem('tweets'));
+}
+
+function cargarTweetsLocalStorage() {
+  let tweets = obtenerTweetLocalStorage();
+  if (Array.isArray(tweets) && tweets.length) {
+    tweets.forEach((tweet) => adicionarItem(tweet));
+  }
 }
