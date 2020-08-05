@@ -1,13 +1,20 @@
-name: Trigger Netlify Build
+name: Staging workflow
 
 on:
-  schedule:
-    - cron: '0 10 * * 1'
+  push:
+    branches:
+      - master
 
 jobs:
-  build:
-    name: Request Netlify Webhook
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Ping
-        run: curl -X POST -d {} https://api.netlify.com/build_hooks/5f2a435f2558ee1605265e5e
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.STAGING_NETLIFY_SITE_ID }}
