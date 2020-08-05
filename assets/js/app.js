@@ -30,6 +30,7 @@ function adicionarItem(texto) {
     item.textContent = texto;
     item.appendChild(botonBorrar);
     listaTweets.appendChild(item);
+    agregarTweetLocalStorage(texto);
   }
 }
 
@@ -39,4 +40,17 @@ function borrarTweet(e) {
     e.target.parentElement.remove();
     alert('Tweet eliminado...!');
   }
+}
+
+function agregarTweetLocalStorage(texto) {
+  let tweets = obtenerTweetLocalStorage();
+  tweets.push(texto);
+  localStorage.setItem('tweets', JSON.stringify(tweets));
+}
+
+function obtenerTweetLocalStorage() {
+  if (!localStorage.getItem('tweets')) {
+    return [];
+  }
+  return JSON.parse(localStorage.getItem('tweets'));
 }
