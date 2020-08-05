@@ -8,11 +8,13 @@ function eventListeners() {
   document
     .querySelector('#formulario')
     .addEventListener('submit', agregarTweet);
+
+  listaTweets.addEventListener('click', borrarTweet);
 }
 
 // Funciones
 function agregarTweet(e) {
-  e.preventDefault(e);
+  e.preventDefault();
   const textArea = document.querySelector('#tweet');
   const tweet = textArea.value.trim();
   adicionarItem(tweet);
@@ -28,5 +30,13 @@ function adicionarItem(texto) {
     item.textContent = texto;
     item.appendChild(botonBorrar);
     listaTweets.appendChild(item);
+  }
+}
+
+function borrarTweet(e) {
+  e.preventDefault(e);
+  if (e.target.className === 'borrar-tweet') {
+    e.target.parentElement.remove();
+    alert('Tweet eliminado...!');
   }
 }
